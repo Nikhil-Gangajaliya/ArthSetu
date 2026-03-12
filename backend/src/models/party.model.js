@@ -1,34 +1,49 @@
 import mongoose, { Schema } from "mongoose";
 
 const partySchema = new Schema(
-{
-    name: {
-        type: String,
-        required: true
-    },
+    {
+        name: {
+            type: String,
+            required: true
+        },
 
-    nameInitial: {
-        type: String,
-        index: true
-    },
+        nameInitial: {
+            type: String,
+            index: true
+        },
 
-    email: {
-        type: String
-    },
+        email: {
+            type: String
+        },
 
-    phone: {
-        type: String
-    },
+        phone: {
+            type: String
+        },
 
-    isHidden: {
-        type: Boolean,
-        default: false
+        balance: {
+            type: Number,
+            default: 0
+        },
+
+        totalCredit: {
+            type: Number,
+            default: 0
+        },
+
+        totalDebit: {
+            type: Number,
+            default: 0
+        },
+
+        isHidden: {
+            type: Boolean,
+            default: false
+        }
+
+    },
+    {
+        timestamps: true
     }
-
-},
-{
-    timestamps: true
-}
 );
 
 partySchema.pre("save", function () {

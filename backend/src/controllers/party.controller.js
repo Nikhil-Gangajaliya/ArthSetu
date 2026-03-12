@@ -170,32 +170,23 @@ const getPartyBalance = asyncHandler(async (req, res) => {
 
     const { partyId } = req.params;
 
-    const entries = await Entry.find({ party: partyId });
+    const party = await Party.findById(partyId);
 
-    let creditTotal = 0;
-    let debitTotal = 0;
-
-    entries.forEach(entry => {
-        if (entry.type === "credit") {
-            creditTotal += entry.amount;
-        } else {
-            debitTotal += entry.amount;
-        }
-    });
-
-    const balance = creditTotal - debitTotal;
+    if (!party) {
+        throw new ApiError(404, "Party not found");
+    }
 
     let status;
     let amount;
 
-    if (balance > 0) {
-        status = "to_collect";
-        amount = balance;
-    } else if (balance < 0) {
-        status = "to_give";
-        amount = Math.abs(balance);
+    if (party.balance > 0) {
+        status = "To Collect";
+        amount = party.balance;
+    } else if (party.balance < 0) {
+        status = "To Pay";
+        amount = Math.abs(party.balance);
     } else {
-        status = "settled";
+        status = "Settled";
         amount = 0;
     }
 
@@ -203,16 +194,15 @@ const getPartyBalance = asyncHandler(async (req, res) => {
         new ApiResponse(
             200,
             {
-                creditTotal,
-                debitTotal,
-                balance,
+                creditTotal: party.totalCredit,
+                debitTotal: party.totalDebit,
+                balance: party.balance,
                 status,
                 amount
             },
-            "Party balance calculated"
+            "Party balance fetched successfully"
         )
     );
-
 });
 
 export {

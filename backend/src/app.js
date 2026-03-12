@@ -23,7 +23,11 @@ app.use(express.static("public"))
 app.use(cookieParser())
 
 import authRouter from "./routes/auth.routes.js";
+import partyRouter from "./routes/party.routes.js";
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/parties",partyRouter);
+
+
 
 export { app };   

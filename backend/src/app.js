@@ -11,11 +11,12 @@ const allowedOrigins = process.env.CORS_ORIGIN
     : ["http://localhost:3000"];
 
 app.use(
-    cors({
-        origin: allowedOrigins,
-        credentials: true,
-    })
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true
+  })
 );
+
 
 app.use(express.json({ limit: "1mb" }))
 app.use(express.urlencoded({ extended: true, limit: "1mb" }))
